@@ -55,6 +55,13 @@ CREATE TABLE Workout (
     FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID)
 );
 
+CREATE TABLE MemberClass (
+  MemberID INT NOT NULL,
+  ClassID INT NOT NULL,
+  PRIMARY KEY (MemberID, ClassID),
+  FOREIGN KEY (MemberID) REFERENCES Member(MemberID),
+  FOREIGN KEY (ClassID) REFERENCES FitnessClass(ClassID)
+);
 
 INSERT INTO MembershipType (MembershipTypeID, TypeName, Description, Duration, Price, Benefits) VALUES
 (100, 'Basic', 'Access to gym facilities only', 1, 29.99, 'Gym Access'),
@@ -122,3 +129,14 @@ INSERT INTO Workout (WorkoutID, MemberID, EquipmentID, WorkoutDate, StartTime, E
 (608, 308, 508, '2025-05-23', '13:00:00', '13:30:00', 250),
 (609, 309, 509, '2025-05-24', '14:00:00', '14:30:00', 330),
 (610, 310, 510, '2025-05-24', '15:00:00', '15:45:00', 370);
+
+INSERT INTO MemberClass VALUES (301, 401), (301, 406);
+INSERT INTO MemberClass VALUES (302, 402), (302, 407);
+INSERT INTO MemberClass VALUES (303, 403), (303, 408);
+INSERT INTO MemberClass VALUES (304, 404), (304, 409);
+INSERT INTO MemberClass VALUES (305, 405), (305, 410);
+INSERT INTO MemberClass VALUES (306, 401), (306, 408);
+INSERT INTO MemberClass VALUES (307, 406), (307, 410);
+INSERT INTO MemberClass VALUES (308, 402), (308, 403);
+INSERT INTO MemberClass VALUES (309, 405), (309, 407);
+INSERT INTO MemberClass VALUES (310, 404), (310, 409);
