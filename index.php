@@ -1,12 +1,11 @@
 <?php
 	session_start();
-	//$currentpage="View Employees"; 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Company DB</title>
+    <title>Gym Management System</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -36,59 +35,53 @@
     <?php
         // Include config file
         require_once "config.php";
-//		include "header.php";
 	?>
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
 		    <div class="page-header clearfix">
-		     <h2> Sample Project CS 340 </h2> 
-                       <p> Project should include CRUD operations. In this website you can:
-				<ol> 	<li> CREATE new employess and  dependents </li>
-					<li> RETRIEVE all dependents and prjects for an employee</li>
-                                        <li> UPDATE employeee and dependent records</li>
-					<li> DELETE employee and dependent records </li>
+		     <h2> Gym Management System </h2> 
+                       <p> Project includes CRUD operations. In this website you can:
+				<ol> 	<li> CREATE new members and staff </li>
+					<li> RETRIEVE all workouts and classes for a member</li>
+                                        <li> UPDATE member and staff records</li>
+					<li> DELETE member and staff records </li>
 				</ol>
-		       <h2 class="pull-left">Employee Details</h2>
-                        <a href="createEmployee.php" class="btn btn-success pull-right">Add New Employee</a>
+		       <h2 class="pull-left">Member Details</h2>
+                        <a href="createMember.php" class="btn btn-success pull-right">Add New Member</a>
                     </div>
                     <?php
                     // Include config file
                     require_once "config.php";
                     
-                    // Attempt select all employee query execution
-					// *****
-					// Insert your function for Salary Level
-					/*
-						$sql = "SELECT Ssn,Fname,Lname,Salary, Address, Bdate, PayLevel(Ssn) as Level, Super_ssn, Dno
-							FROM EMPLOYEE";
-					*/
-                    $sql = "SELECT Name, Student_number as SID, Class, Major FROM STUDENT";
+                    // Query for Members instead of Students
+                    $sql = "SELECT MemberID, FirstName, LastName, Email, Phone FROM Member";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th width=8%>Name</th>";
-                                        echo "<th width=10%>Student_number</th>";
-                                        echo "<th width=10%>Class</th>";
-                                        echo "<th width=15%>Major</th>";
+                                        echo "<th width=8%>Member ID</th>";
+                                        echo "<th width=10%>First Name</th>";
+                                        echo "<th width=10%>Last Name</th>";
+                                        echo "<th width=15%>Email</th>";
+                                        echo "<th width=10%>Phone</th>";
                                         echo "<th width=10%>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['Name'] . "</td>";
-                                        echo "<td>" . $row['SID'] . "</td>";
-                                        echo "<td>" . $row['Class'] . "</td>";
-										echo "<td>" . $row['Major'] . "</td>";									
+                                        echo "<td>" . $row['MemberID'] . "</td>";
+                                        echo "<td>" . $row['FirstName'] . "</td>";
+                                        echo "<td>" . $row['LastName'] . "</td>";
+										echo "<td>" . $row['Email'] . "</td>";
+										echo "<td>" . $row['Phone'] . "</td>";									
                                         echo "<td>";
-                                            echo "<a href='viewProjects.php?Ssn=". $row['Ssn']."&Lname=".$row['Lname']."' title='View Projects' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
-                                            echo "<a href='updateEmployee.php?Ssn=". $row['Ssn'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
-                                            echo "<a href='deleteEmployee.php?Ssn=". $row['Ssn'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
-											echo "<a href='viewDependents.php?Ssn=". $row['Ssn']."&Lname=".$row['Lname']."' title='View Dependents' data-toggle='tooltip'><span class='glyphicon glyphicon-user'></span></a>";
+                                            echo "<a href='viewWorkouts.php?MemberID=". $row['MemberID']."&LastName=".$row['LastName']."' title='View Workouts' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>";
+                                            echo "<a href='updateMember.php?MemberID=". $row['MemberID'] ."' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>";
+                                            echo "<a href='deleteMember.php?MemberID=". $row['MemberID'] ."' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -97,35 +90,32 @@
                             // Free result set
                             mysqli_free_result($result);
                         } else{
-                            echo "<p class='lead'><em>No records were found.</em></p>";
+                            echo "<p class='lead'><em>No members were found.</em></p>";
                         }
                     } else{
                         echo "ERROR: Could not able to execute $sql. <br>" . mysqli_error($link);
                     }
-					echo "<br> <h2> Department Stats </h2> <br>";
+					echo "<br> <h2> Equipment Stats </h2> <br>";
 					
-                    // Select Department Stats
-					// You will need to Create a DEPT_STATS table
-					
-                    $sql2 = "SELECT * FROM COURSE";
+                    // Select Equipment Stats instead of Course stats
+                    $sql2 = "SELECT EquipmentID, EquipmentName, EquipmentType FROM Equipment";
                     if($result2 = mysqli_query($link, $sql2)){
                         if(mysqli_num_rows($result2) > 0){
                             echo "<div class='col-md-4'>";
 							echo "<table width=30% class='table table-bordered table-striped'>";
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th width=20%>Number</th>";
+                                        echo "<th width=20%>Equipment ID</th>";
                                         echo "<th width = 40%>Name</th>";
-                                        echo "<th width = 20%>Credits</th>";
-	
+                                        echo "<th width = 20%>Type</th>";
+                                    echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result2)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['Course_number'] . "</td>";
-                                        echo "<td>" . $row['Course_name'] . "</td>";
-                                        echo "<td>" . $row['Credit_hours'] . "</td>";
-               
+                                        echo "<td>" . $row['EquipmentID'] . "</td>";
+                                        echo "<td>" . $row['EquipmentName'] . "</td>";
+                                        echo "<td>" . $row['EquipmentType'] . "</td>";
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            
@@ -133,7 +123,7 @@
                             // Free result set
                             mysqli_free_result($result2);
                         } else{
-                            echo "<p class='lead'><em>No records were found for Dept Stats.</em></p>";
+                            echo "<p class='lead'><em>No equipment records were found.</em></p>";
                         }
                     } else{
                         echo "ERROR: Could not able to execute $sql2. <br>" . mysqli_error($link);
@@ -143,6 +133,8 @@
                     mysqli_close($link);
                     ?>
                 </div>
-
+            </div>        
+        </div>
+    </div>
 </body>
 </html>
