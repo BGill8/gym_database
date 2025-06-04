@@ -95,7 +95,7 @@
                     } else{
                         echo "ERROR: Could not able to execute $sql. <br>" . mysqli_error($link);
                     }
-					echo "<br> <h2> Equipment Stats </h2> <br>";
+					echo "<br> <h2> Equipment Detail </h2> <br>";
 					
                     // Select Equipment Stats instead of Course stats
                     $sql2 = "SELECT EquipmentID, EquipmentName, EquipmentType FROM Equipment";
