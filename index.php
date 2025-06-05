@@ -35,7 +35,23 @@
             margin-right: 10px;
             margin-bottom: 10px;
         }
+
+        .gym-logo-header-right {
+            position: absolute;
+            top: -20px;
+            right: -50px;
+            height: 300px;
+            width: 500px;
+            z-index: 10;
+        }
+
+        /* Make sure the header has relative positioning */
+        .page-header {
+            position: relative;
+            padding-right: 220px; /* Give space for the logo */
+        }        
     </style>
+
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();   
@@ -54,6 +70,7 @@
                 <div class="col-md-12">
 		    <div class="page-header clearfix">
 		     <h1>Benny's Iron Dam - Gym Management System</h1> 
+             <img src="images/logo.png" alt="Benny's Iron Dam Logo" class="gym-logo-header-right">
                        <p>Project includes CRUD operations for gym management. In this system you can:
 				<ol> 	<li>CREATE new members, staff, and fitness classes</li>
 					<li>RETRIEVE all workouts and classes for members</li>
