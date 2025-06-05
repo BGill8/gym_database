@@ -80,7 +80,7 @@
                     $sql = "SELECT m.MemberID, m.FirstName, m.LastName, m.Email, m.Phone, mt.TypeName 
                             FROM Member m 
                             LEFT JOIN MembershipType mt ON m.MembershipTypeID = mt.MembershipTypeID 
-                            ORDER BY m.LastName, m.FirstName";
+                            ORDER BY m.MemberID ASC";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo "<table class='table table-bordered table-striped'>";
