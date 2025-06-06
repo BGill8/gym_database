@@ -82,15 +82,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_EndTime = $EndTime;
             $param_TotalCaloriesBurned = $TotalCaloriesBurned;
         
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Records created successfully. Redirect to view workouts page
-                header("location: viewWorkouts.php?MemberID=" . $MemberID . "&LastName=" . $LastName);
+            if (!mysqli_stmt_execute($stmt)) {
+                $SQL_err = "<center><h4 style='color:red;'>SQL Error: " . mysqli_stmt_error($stmt) . "</h4></center>";
+            } else {
+                header("location: viewWorkouts.php?MemberID=$MemberID&LastName=$LastName");
                 exit();
-            } else{
-                // Error
-                $SQL_err = mysqli_error($link);
             }
+
         }
          
         // Close statement

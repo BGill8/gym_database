@@ -88,13 +88,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_MembershipTypeID = $MembershipTypeID;
             
             // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Records created successfully. Redirect to landing page
-                header("location: ../index.php");
+            if (!mysqli_stmt_execute($stmt)) {
+                echo "<center><h4 style='color:red;'>SQL Error: " . mysqli_stmt_error($stmt) . "</h4></center>";
+            } else {
+                    header("location: ../index.php");
                 exit();
-            } else{
-                echo "<center><h4>Error while creating new member</h4></center>";
-                $MemberID_err = "Enter a unique Member ID.";
             }
         }
          

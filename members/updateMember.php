@@ -112,14 +112,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $param_MembershipTypeID = $MembershipTypeID;
             $param_MemberID = $MemberID;
             
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Records updated successfully. Redirect to landing page
+            if (!mysqli_stmt_execute($stmt)) {
+                echo "<center><h4 style='color:red;'>SQL Error: " . mysqli_stmt_error($stmt) . "</h4></center>";
+            } else {
                 header("location: ../index.php");
                 exit();
-            } else{
-                echo "<center><h2>Error when updating member</center></h2>";
             }
+
         }        
         // Close statement
         mysqli_stmt_close($stmt);
