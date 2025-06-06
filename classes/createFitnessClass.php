@@ -3,18 +3,11 @@
 require_once "../config.php";
  
 // Define variables and initialize with empty values
-$ClassID = $ClassName = $Description = $StartTime = $EndTime = $MaxCapacity = $StaffID = $Rating = "";
-$ClassID_err = $ClassName_err = $Description_err = $StartTime_err = $EndTime_err = $MaxCapacity_err = $StaffID_err = $Rating_err = "";
+$ClassName = $Description = $StartTime = $EndTime = $MaxCapacity = $StaffID = $Rating = "";
+$ClassName_err = $Description_err = $StartTime_err = $EndTime_err = $MaxCapacity_err = $StaffID_err = $Rating_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate Class ID
-    $ClassID = trim($_POST["ClassID"]);
-    if(empty($ClassID)){
-        $ClassID_err = "Please enter a Class ID.";
-    } elseif(!ctype_digit($ClassID)){
-        $ClassID_err = "Please enter a positive integer value for Class ID.";
-    }
     
     // Validate Class Name
     $ClassName = trim($_POST["ClassName"]);
@@ -56,20 +49,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Validate Rating (optional)
     $Rating = trim($_POST["Rating"]);
-    if(!empty($Rating) && (!is_numeric($Rating) || $Rating < 1 || $Rating > 5)){
-        $Rating_err = "Rating must be between 1 and 5.";
+    if(!empty($Rating) && (!is_numeric($Rating) || $Rating < 0 || $Rating > 5)){
+        $Rating_err = "Rating must be between 0 and 5.";
     }
 
     // Check input errors before inserting in database
-    if(empty($ClassID_err) && empty($ClassName_err) && empty($Description_err) && empty($StartTime_err) && 
+    if(empty($ClassName_err) && empty($Description_err) && empty($StartTime_err) && 
        empty($EndTime_err) && empty($MaxCapacity_err) && empty($StaffID_err) && empty($Rating_err)){
         
         // Prepare rating value (NULL if empty)
         $ratingValue = empty($Rating) ? "NULL" : $Rating;
         
         // Insert statement
-        $sql = "INSERT INTO FitnessClass (ClassID, ClassName, Description, StartTime, EndTime, MaxCapacity, StaffID, Rating) 
-                VALUES ($ClassID, '$ClassName', '$Description', '$StartTime', '$EndTime', $MaxCapacity, $StaffID, $ratingValue)";
+        $sql = "INSERT INTO FitnessClass (ClassName, Description, StartTime, EndTime, MaxCapacity, StaffID, Rating) 
+                VALUES ('$ClassName', '$Description', '$StartTime', '$EndTime', $MaxCapacity, $StaffID, $ratingValue)";
          
         if(mysqli_query($link, $sql)){
             // Records created successfully. Redirect to classes page
@@ -109,11 +102,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     </div>
                     <p>Please fill this form and submit to add a fitness class to the gym database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($ClassID_err)) ? 'has-error' : ''; ?>">
-                            <label>Class ID</label>
-                            <input type="text" name="ClassID" class="form-control" value="<?php echo $ClassID; ?>">
-                            <span class="help-block"><?php echo $ClassID_err;?></span>
-                        </div>
                         
                         <div class="form-group <?php echo (!empty($ClassName_err)) ? 'has-error' : ''; ?>">
                             <label>Class Name</label>
@@ -175,14 +163,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         
                         <div class="form-group <?php echo (!empty($Rating_err)) ? 'has-error' : ''; ?>">
                             <label>Initial Rating (Optional)</label>
-                            <select name="Rating" class="form-control">
-                                <option value="">No Rating Yet</option>
-                                <option value="1" <?php echo ($Rating == '1') ? 'selected' : ''; ?>>1 Star</option>
-                                <option value="2" <?php echo ($Rating == '2') ? 'selected' : ''; ?>>2 Stars</option>
-                                <option value="3" <?php echo ($Rating == '3') ? 'selected' : ''; ?>>3 Stars</option>
-                                <option value="4" <?php echo ($Rating == '4') ? 'selected' : ''; ?>>4 Stars</option>
-                                <option value="5" <?php echo ($Rating == '5') ? 'selected' : ''; ?>>5 Stars</option>
-                            </select>
+                            <input type="number" name="Rating" class="form-control" min="0" max="5" step="0.1" value="<?php echo $Rating; ?>" placeholder="e.g., 4.5">
                             <span class="help-block"><?php echo $Rating_err;?></span>
                         </div>
                         

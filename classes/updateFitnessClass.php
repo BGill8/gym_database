@@ -57,7 +57,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate End Time
     $EndTime = trim($_POST["EndTime"]);
     if(empty($EndTime)){
-        $EndTime_err = "Please enter end time.";
     }
     
     // Validate Max Capacity
@@ -84,8 +83,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     
     // Validate Rating (optional)
     $Rating = trim($_POST["Rating"]);
-    if(!empty($Rating) && (!is_numeric($Rating) || $Rating < 1 || $Rating > 5)){
-        $Rating_err = "Rating must be between 1 and 5.";
+    if(!empty($Rating) && (!is_numeric($Rating) || $Rating < 0 || $Rating > 5)){
+        $Rating_err = "Rating must be between 0 and 5.";
     }
 
     // Check input errors before updating database
@@ -203,14 +202,7 @@ if(!$ClassID) {
                         
                         <div class="form-group <?php echo (!empty($Rating_err)) ? 'has-error' : ''; ?>">
                             <label>Rating</label>
-                            <select name="Rating" class="form-control">
-                                <option value="">No Rating</option>
-                                <option value="1" <?php echo ($Rating == '1') ? 'selected' : ''; ?>>1 Star</option>
-                                <option value="2" <?php echo ($Rating == '2') ? 'selected' : ''; ?>>2 Stars</option>
-                                <option value="3" <?php echo ($Rating == '3') ? 'selected' : ''; ?>>3 Stars</option>
-                                <option value="4" <?php echo ($Rating == '4') ? 'selected' : ''; ?>>4 Stars</option>
-                                <option value="5" <?php echo ($Rating == '5') ? 'selected' : ''; ?>>5 Stars</option>
-                            </select>
+                            <input type="number" name="Rating" class="form-control" min="0" max="5" step="0.1" value="<?php echo $Rating; ?>" placeholder="e.g., 4.5">
                             <span class="help-block"><?php echo $Rating_err;?></span>
                         </div>
                         
