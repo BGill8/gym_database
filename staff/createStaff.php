@@ -3,18 +3,11 @@
 require_once "../config.php";
  
 // Define variables and initialize with empty values
-$StaffID = $FirstName = $LastName = $Email = $Phone = $Position = "";
-$StaffID_err = $FirstName_err = $LastName_err = $Email_err = $Phone_err = $Position_err = "";
+$FirstName = $LastName = $Email = $Phone = $Position = "";
+$FirstName_err = $LastName_err = $Email_err = $Phone_err = $Position_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate Staff ID
-    $StaffID = trim($_POST["StaffID"]);
-    if(empty($StaffID)){
-        $StaffID_err = "Please enter a Staff ID.";
-    } elseif(!ctype_digit($StaffID)){
-        $StaffID_err = "Please enter a positive integer value for Staff ID.";
-    }
     
     // Validate First Name
     $FirstName = trim($_POST["FirstName"]);
@@ -53,12 +46,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Check input errors before inserting in database
-    if(empty($StaffID_err) && empty($FirstName_err) && empty($LastName_err) && empty($Email_err) && 
+    if(empty($FirstName_err) && empty($LastName_err) && empty($Email_err) && 
        empty($Phone_err) && empty($Position_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO Staff (StaffID, FirstName, LastName, Email, Phone, Position) 
-                VALUES ($StaffID, '$FirstName', '$LastName', '$Email', '$Phone', '$Position')";
+        $sql = "INSERT INTO Staff (FirstName, LastName, Email, Phone, Position) 
+                VALUES ('$FirstName', '$LastName', '$Email', '$Phone', '$Position')";
          
         if(mysqli_query($link, $sql)){
             // Records created successfully. Redirect to staff page
@@ -69,6 +62,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             $StaffID_err = "Enter a unique Staff ID.";
         }
     }
+    
 
     // Close connection
     mysqli_close($link);
@@ -98,11 +92,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     </div>
                     <p>Please fill this form and submit to add a staff member to the gym database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($StaffID_err)) ? 'has-error' : ''; ?>">
-                            <label>Staff ID</label>
-                            <input type="text" name="StaffID" class="form-control" value="<?php echo $StaffID; ?>">
-                            <span class="help-block"><?php echo $StaffID_err;?></span>
-                        </div>
                         
                         <div class="form-group <?php echo (!empty($FirstName_err)) ? 'has-error' : ''; ?>">
                             <label>First Name</label>
