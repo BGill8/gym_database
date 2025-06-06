@@ -3,18 +3,11 @@
 require_once "../config.php";
  
 // Define variables and initialize with empty values
-$MemberID = $FirstName = $LastName = $Email = $Phone = $Address = $DateOfBirth = $MembershipTypeID = "";
-$MemberID_err = $FirstName_err = $LastName_err = $Email_err = $Phone_err = $Address_err = $DateOfBirth_err = $MembershipTypeID_err = "";
+$FirstName = $LastName = $Email = $Phone = $Address = $DateOfBirth = $MembershipTypeID = "";
+$FirstName_err = $LastName_err = $Email_err = $Phone_err = $Address_err = $DateOfBirth_err = $MembershipTypeID_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate Member ID
-    $MemberID = trim($_POST["MemberID"]);
-    if(empty($MemberID)){
-        $MemberID_err = "Please enter a Member ID.";
-    } elseif(!ctype_digit($MemberID)){
-        $MemberID_err = "Please enter a positive integer value for Member ID.";
-    }
     
     // Validate First Name
     $FirstName = trim($_POST["FirstName"]);
@@ -65,20 +58,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Check input errors before inserting in database
-    if(empty($MemberID_err) && empty($FirstName_err) && empty($LastName_err) && empty($Email_err) && 
+    if(empty($FirstName_err) && empty($LastName_err) && empty($Email_err) && 
        empty($Phone_err) && empty($Address_err) && empty($DateOfBirth_err) && empty($MembershipTypeID_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO Member (MemberID, FirstName, LastName, Email, Phone, Address, DateOfBirth, MembershipTypeID) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Member (FirstName, LastName, Email, Phone, Address, DateOfBirth, MembershipTypeID) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "issssssi", $param_MemberID, $param_FirstName, $param_LastName, 
+            mysqli_stmt_bind_param($stmt, "ssssssi", $param_FirstName, $param_LastName, 
                 $param_Email, $param_Phone, $param_Address, $param_DateOfBirth, $param_MembershipTypeID);
             
             // Set parameters
-            $param_MemberID = $MemberID;
             $param_FirstName = $FirstName;
             $param_LastName = $LastName;
             $param_Email = $Email;
@@ -128,12 +120,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     </div>
                     <p>Please fill this form and submit to add a member to the gym database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-                        <div class="form-group <?php echo (!empty($MemberID_err)) ? 'has-error' : ''; ?>">
-                            <label>Member ID</label>
-                            <input type="text" name="MemberID" class="form-control" value="<?php echo $MemberID; ?>">
-                            <span class="help-block"><?php echo $MemberID_err;?></span>
-                        </div>
-                        
                         <div class="form-group <?php echo (!empty($FirstName_err)) ? 'has-error' : ''; ?>">
                             <label>First Name</label>
                             <input type="text" name="FirstName" class="form-control" value="<?php echo $FirstName; ?>">

@@ -10,19 +10,12 @@ require_once "../config.php";
 
 <?php 
 // Define variables and initialize with empty values
-$WorkoutID = $EquipmentID = $WorkoutDate = $StartTime = $EndTime = $TotalCaloriesBurned = "";
-$WorkoutID_err = $EquipmentID_err = $WorkoutDate_err = $StartTime_err = $EndTime_err = $TotalCaloriesBurned_err = "";
+$EquipmentID = $WorkoutDate = $StartTime = $EndTime = $TotalCaloriesBurned = "";
+$EquipmentID_err = $WorkoutDate_err = $StartTime_err = $EndTime_err = $TotalCaloriesBurned_err = "";
 $SQL_err = "";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate Workout ID
-    $WorkoutID = trim($_POST["WorkoutID"]);
-    if(empty($WorkoutID)){
-        $WorkoutID_err = "Please enter a workout ID.";
-    } elseif(!ctype_digit($WorkoutID)){
-        $WorkoutID_err = "Please enter a positive integer value for Workout ID.";
-    }
     
     // Validate Equipment (optional)
     $EquipmentID = trim($_POST["EquipmentID"]);
@@ -60,21 +53,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     // Check input errors before inserting in database
-    if(empty($WorkoutID_err) && empty($EquipmentID_err) && empty($WorkoutDate_err) && 
+    if(empty($EquipmentID_err) && empty($WorkoutDate_err) && 
        empty($StartTime_err) && empty($EndTime_err) && empty($TotalCaloriesBurned_err) && empty($SQL_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO Workout (WorkoutID, MemberID, EquipmentID, WorkoutDate, StartTime, EndTime, TotalCaloriesBurned) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO Workout (MemberID, EquipmentID, WorkoutDate, StartTime, EndTime, TotalCaloriesBurned) 
+                VALUES (?, ?, ?, ?, ?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
             $equipmentParam = empty($EquipmentID) ? null : $EquipmentID;
-            mysqli_stmt_bind_param($stmt, 'iiisssi', $param_WorkoutID, $param_MemberID, $param_EquipmentID, 
+            mysqli_stmt_bind_param($stmt, 'iisssi', $param_MemberID, $param_EquipmentID, 
                 $param_WorkoutDate, $param_StartTime, $param_EndTime, $param_TotalCaloriesBurned);
             
             // Set parameters
-            $param_WorkoutID = $WorkoutID;
             $param_MemberID = $MemberID;
             $param_EquipmentID = $equipmentParam;
             $param_WorkoutDate = $WorkoutDate;
@@ -127,11 +119,6 @@ echo $SQL_err;
 ?>    
 
     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
-        <div class="form-group <?php echo (!empty($WorkoutID_err)) ? 'has-error' : ''; ?>">
-            <label>Workout ID</label>
-            <input type="number" name="WorkoutID" class="form-control" value="<?php echo $WorkoutID; ?>">
-            <span class="help-block"><?php echo $WorkoutID_err; ?></span>
-        </div>
         
         <div class="form-group <?php echo (!empty($EquipmentID_err)) ? 'has-error' : ''; ?>">
             <label>Equipment (Optional)</label>
