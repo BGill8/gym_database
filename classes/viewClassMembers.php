@@ -97,7 +97,7 @@ require_once "../config.php";
                                 LEFT JOIN MembershipType mt ON m.MembershipTypeID = mt.MembershipTypeID
                                 INNER JOIN MemberClass mc ON m.MemberID = mc.MemberID 
                                 WHERE mc.ClassID = $ClassID
-                                ORDER BY m.LastName, m.FirstName";
+                                ORDER BY m.MemberID";
 
                         $result = mysqli_query($link, $sql);
                         
@@ -130,7 +130,8 @@ require_once "../config.php";
                                             echo "<td>" . $row['Phone'] . "</td>";
                                             echo "<td>" . ($row['TypeName'] ?? 'No Membership') . "</td>";
                                             echo "<td>";
-                                                echo "<a href='../members/viewWorkouts.php?MemberID=". $row['MemberID']."&LastName=".$row['LastName']."' title='View Member Workouts' data-toggle='tooltip'><span class='glyphicon glyphicon-list-alt'></span></a>";
+                                            echo "<a href='../members/viewWorkouts.php?MemberID=". $row['MemberID']."&LastName=".$row['LastName']."' title='View Member Workouts' data-toggle='tooltip'><span class='glyphicon glyphicon-list-alt'></span></a>";
+                                            echo "<a href='../classes/deleteMemberClass.php?MemberID=" . $row['MemberID'] . "&ClassID=" . $ClassID . "' title='Unenroll Member' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>";
                                             echo "</td>";
                                         echo "</tr>";
                                     }
@@ -166,6 +167,7 @@ require_once "../config.php";
                     ?>
                     
                     <p>
+                        <a href="addMemberClass.php" class= "btn btn-success">Enroll Member</a>
                         <a href="viewAllClasses.php" class="btn btn-primary">Back to All Classes</a>
                         <a href="../index.php" class="btn btn-default">Back to Dashboard</a>
                     </p>
