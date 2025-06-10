@@ -1,3 +1,4 @@
+-- Group #3 Gabriel de Leon, James Nguyen, Stanley Eng, Brandon Gill
 -- phpMyAdmin SQL Dump
 -- version 5.2.2-1.el9.remi
 -- https://www.phpmyadmin.net/

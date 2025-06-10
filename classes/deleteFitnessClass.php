@@ -1,4 +1,5 @@
 <?php
+//Group #3 Gabriel de Leon, James Nguyen, Stanley Eng, Brandon Gill
 session_start();
 require_once "../config.php";
 

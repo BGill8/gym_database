@@ -1,4 +1,5 @@
 <?php
+//Group #3 Gabriel de Leon, James Nguyen, Stanley Eng, Brandon Gill
 session_start();
 ob_start();
 $ClassID = $_SESSION["ClassID"] = $_GET["ClassID"] ?? $_SESSION["ClassID"] ?? "";

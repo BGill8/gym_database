@@ -1,4 +1,5 @@
 <?php
+//Group #3 Gabriel de Leon, James Nguyen, Stanley Eng, Brandon Gill
 session_start();
 ob_start();
 $MemberID = $_SESSION["MemberID"] = $_GET["MemberID"] ?? $_SESSION["MemberID"] ?? "";
