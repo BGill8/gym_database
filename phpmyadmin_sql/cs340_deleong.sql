@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 09, 2025 at 07:16 PM
+-- Generation Time: Jun 09, 2025 at 10:43 PM
 -- Server version: 10.11.11-MariaDB-log
 -- PHP Version: 8.4.8
 
@@ -87,7 +87,7 @@ INSERT INTO `FitnessClass` (`ClassID`, `ClassName`, `Description`, `StartTime`, 
 -- Triggers `FitnessClass`
 --
 DELIMITER $$
-CREATE TRIGGER `check_start_and_end_time_insert` BEFORE INSERT ON `FitnessClass` FOR EACH ROW BEGIN
+CREATE TRIGGER `check_start_and_end_time_fc_insert` BEFORE INSERT ON `FitnessClass` FOR EACH ROW BEGIN
     IF NEW.StartTime >= NEW.EndTime THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Start time must be before end time.';
@@ -96,7 +96,7 @@ END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `check_start_and_end_time_update` BEFORE UPDATE ON `FitnessClass` FOR EACH ROW BEGIN
+CREATE TRIGGER `check_start_and_end_time_fc_update` BEFORE UPDATE ON `FitnessClass` FOR EACH ROW BEGIN
     IF NEW.StartTime >= NEW.EndTime THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Start time must be before end time.';
@@ -375,7 +375,7 @@ INSERT INTO `Workout` (`WorkoutID`, `MemberID`, `EquipmentID`, `WorkoutDate`, `S
 -- Triggers `Workout`
 --
 DELIMITER $$
-CREATE TRIGGER `check_start_and_end_time` BEFORE INSERT ON `Workout` FOR EACH ROW BEGIN
+CREATE TRIGGER `check_start_and_end_time_workout_insert` BEFORE INSERT ON `Workout` FOR EACH ROW BEGIN
     IF NEW.StartTime >= NEW.EndTime THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Start time must be before end time.';
